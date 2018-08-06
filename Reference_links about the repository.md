@@ -13,6 +13,8 @@ https://github.com/SirVer/cartographer_ros/commit/09c8aa6746034aba9b0a06662b3889
 https://github.com/ozgudum/cartographer_ros
 https://github.com/googlecartographer/cartographer_ros/issues/259
 
+https://github.com/googlecartographer/cartographer_ros/issues/725 （it' a real-time SLAM case based in VLP16 and cartographer.Maybe it will be helpful in future）
+
 4.reference_link about the fomat for Lidar.
 
 http://docs.ros.org/api/sensor_msgs/html/msg/PointCloud2.html
