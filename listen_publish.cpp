@@ -1,7 +1,9 @@
 #include "ros/ros.h"
 #include "std_msgs/String.h"
 #include "sensor_msgs/LaserScan.h"
-#include "sensor_msgs/MultiEchoLaserScan.h"
+#include "velodyne_msgs/VelodyneScan.h"
+#include "velodyne_msgs/VelodynePacket.h"
+//#include "sensor_msgs/MultiEchoLaserScan.h"
 
 class VelodyneScan_Convert_LaserScan
 {
@@ -9,10 +11,9 @@ public:
 
 VelodyneScan_Convert_LaserScan()
 {   
-    ros::sensor_msgs::LaserScan catographer_1 = new ros::sensor_msgs::LaserScan();
     ros::Subscriber subscriber_1 = n.subscribe("/scan",1000,chatterCallback);
-    ros::Publisher pub_1 = n.advertise<sensor_msgs::LaserScan>("/horizontal_laser_2d", 1000);
-    pub_1.publish();
+    ros::Publisher publisher_1 = n.advertise<sensor_msgs::LaserScan>("/new_LaserScan_2d", 1000);
+    publisher_1.publish(catographer_1);
 }
 
 void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
@@ -24,6 +25,8 @@ void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
   catographer_1->header.stamp.nsec=msg->header.stamp.nsec;
   catographer_1->header.seq = 0;
   catographer_1->header.frame_id = Null;
+   //frame_id is not defined! 
+    
   //int* range_begin=&(catographer_1->ranges[0]);
   // maybe:      &((catographer_1->ranges)[0])
 
@@ -59,72 +62,17 @@ void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
 }
 private:
     ros::NodeHandle n;
-    ros::Publisher pub_1;
+    ros::Publisher publisher_1;
     ros::Subscriber subscriber_1;
     ros::sensor_msgs::LaserScan catographer_1;
 }
 
 int main(int argc, char const *argv[])
 {
-    ros::init(argc,argv,"listener");
+    ros::init(argc,argv,"listener_publisher");
     VelodyneScan_Convert_LaserScan fire;
     ros::spin(); 
     return 0;
 }
 
 
-/*
-class convert_LaserScan_to_MultiEchoLaserScan
- {
- public:
- convert_LaserScan_to_MultiEchoLaserScan()
-  {
- //Topic you want to publish
-  pub_ = n_.advertise<sensor_msgs::LaserScan>("/horizontal_laser_2d", 1000);
-
-//Topic you want to subscribe
-  sub_ = n_.subscribe("/scan", 1000, &convert_LaserScan_to_MultiEchoLaserScan::callback, this);
- }
-
-
- void callback(const sensor_msgs::LaserScan::ConstPtr& input)
-{
-sensor_msgs::LaserScan output;
-
-sensor_msgs::MultiEchoLaserScan muls;
-for (int i = 0; i < input->ranges.size(); ++i) {
-    const float &range = input->ranges[i];
-    ROS_INFO("ranges: [%f]",range);
-    sensor_msgs::LaserEcho echo;
-    echo.echoes.push_back(range);
-    muls.ranges.push_back(echo);
-
-}
-
-pub_.publish(output);
- }
-
-  private:
-  ros::NodeHandle n_;
-  ros::Publisher pub_;
-  ros::Subscriber sub_;
-
-  };//End of class convert_LaserScan_to_MultiEchoLaserScan
-
-
-  int main(int argc, char **argv)
- {  
-  //Initiate ROS
-  ros::init(argc, argv, "convert_LaserScan_to_MultiEchoLaserScan");
-
-  //Create an object of class SubscribeAndPublish that will take care of everything
-  convert_LaserScan_to_MultiEchoLaserScan SAPObject;
-
-  ros::spin();
-
-
-
-  return 0;
-}
-
-*/
