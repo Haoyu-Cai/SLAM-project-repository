@@ -22,4 +22,6 @@ http://docs.ros.org/api/sensor_msgs/html/msg/PointCloud2.html
 
 5.reference_link about XML language.
 
+http://www.w3school.com.cn/xml/xml_tree.asp
+
 waiting update...
