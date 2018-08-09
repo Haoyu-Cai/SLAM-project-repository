@@ -58,7 +58,7 @@ void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
  //                   cartographer_1.ranges[i*24+j*2+flag]+=uint32_t(int(msg->packets[i].data[6+100*j+1]));
   //                  cartographer_1.ranges[i*24+j*2+flag]=TwoUint8_to_Float32(&(msg->packets[i].data[6+100*j+1]));
                       int addr =msg->packets[i].data[6+100*j+1] & 0xFF;  
-                    addr |= msg->packets[i].data[6+100*j+2]<<8 & 0xFF00);  
+                    addr |= msg->packets[i].data[6+100*j+2]<<8 & 0xFF00;  
                      cartographer_1.ranges[i*24+j*2+flag]=addr; 
                      //float strong convertion
                     flag++;
@@ -70,7 +70,7 @@ void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
  //                   cartographer_1.ranges[i*24+j*2+flag]+=uint32_t(msg->packets[i].data[54+100*j+1]);
   //            cartographer_1.ranges[i*24+j*2+flag]=TwoUint8_to_Float32(&(msg->packets[i].data[54+100*j+1]));
                     int addr =msg->packets[i].data[54+100*j+1] & 0xFF;  
-                     addr |= msg->packets[i].data[54+100*j+2]<<8 & 0xFF00);  
+                     addr |= msg->packets[i].data[54+100*j+2]<<8 & 0xFF00;  
                      cartographer_1.ranges[i*24+j*2+flag]=addr; 
                      // float strong convertion
                     flag++;
