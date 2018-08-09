@@ -56,7 +56,7 @@ void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
  //                   cartographer.intensities[i*24+j*2+flag]=float(msg->packets[i].data[6+100*j]);
  //                   cartographer.ranges[i*24+j*2+flag]=(uint32_t(msg->packets[i].data[6+100*j+2]))<<8;
  //                   cartographer.ranges[i*24+j*2+flag]+=uint32_t(int(msg->packets[i].data[6+100*j+1]));
-                    cartographer.ranges[i*24+j*2+flag]=TwoBytes_to_float(&msg->packets[i].data[6+100*j+1])
+                    cartographer.ranges[i*24+j*2+flag]=TwoBytes_to_float(&(msg->packets[i].data[6+100*j+1]))
                     flag++;
                 }
                 else if(flag==1)
@@ -64,7 +64,7 @@ void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
  //                   cartographer.intensities[i*24+j*2+flag]=float(msg->packets[i].data[54+100*j]);
  //                   cartographer.ranges[i*24*j*2+flag]=(uint32_t(msg->packets[i].data[54+100*j+2]))<<8;
  //                   cartographer.ranges[i*24+j*2+flag]+=uint32_t(msg->packets[i].data[54+100*j+1]);
-                    cartographer.ranges[i*24+j*2+flag]=TwoBytes_to_float(&msg->packets[i].data[54+100*j+1]);
+                    cartographer.ranges[i*24+j*2+flag]=TwoBytes_to_float(&(msg->packets[i].data[54+100*j+1]));
                     flag++;
                 }
             }
