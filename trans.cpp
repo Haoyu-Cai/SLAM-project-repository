@@ -11,8 +11,8 @@ public:
 
 VelodyneScan_Convert_LaserScan()
 {   
-    subscriber_1 = n.subscribe("/velodyne_packets",1000,&VelodyneScan_Convert_LaserScan::chatterCallback, this);
-    publisher_1 = n.advertise<sensor_msgs::LaserScan>("/new_LaserScan_2d", 1000);
+    subscriber_1 = n.subscribe("/velodyne_packets",2000,&VelodyneScan_Convert_LaserScan::chatterCallback, this);
+    publisher_1 = n.advertise<sensor_msgs::LaserScan>("/new_LaserScan_2d", 2000);
     publisher_1.publish(cartographer_1);
 }
 
@@ -56,7 +56,7 @@ void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
  //                   cartographer_1.intensities[i*24+j*2+flag]=float(msg->packets[i].data[6+100*j]);
  //                   cartographer_1.ranges[i*24+j*2+flag]=(uint32_t(msg->packets[i].data[6+100*j+2]))<<8;
  //                   cartographer_1.ranges[i*24+j*2+flag]+=uint32_t(int(msg->packets[i].data[6+100*j+1]));
-                    cartographer_1.ranges[i*24+j*2+flag]=TwoUint8_to_Uint32(&(msg->packets[i].data[6+100*j+1]));
+                    cartographer_1.ranges[i*24+j*2+flag]=TwoUint8_to_Float32(&(msg->packets[i].data[6+100*j+1]));
                     flag++;
                 }
                 else if(flag==1)
@@ -64,7 +64,7 @@ void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
  //                   cartographer_1.intensities[i*24+j*2+flag]=float(msg->packets[i].data[54+100*j]);
  //                   cartographer_1.ranges[i*24*j*2+flag]=(uint32_t(msg->packets[i].data[54+100*j+2]))<<8;
  //                   cartographer_1.ranges[i*24+j*2+flag]+=uint32_t(msg->packets[i].data[54+100*j+1]);
-                    cartographer_1.ranges[i*24+j*2+flag]=TwoUint8_to_Uint32(&(msg->packets[i].data[54+100*j+1]));
+                    cartographer_1.ranges[i*24+j*2+flag]=TwoUint8_to_Float32(&(msg->packets[i].data[54+100*j+1]));
                     flag++;
                 }
             }
@@ -74,12 +74,20 @@ void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
 // ROS_INFO("%d %d %d", i,msg->packets[0].stamp.nsec,msg->packets[i].stamp.nsec);
 
 }
-
+/*
 uint32_t TwoUint8_to_Uint32(const unsigned char* uint8s)
 {
     int addr =uint8s[0] & 0xFF;  
     addr |= (uint8s[1]<<8 & 0xFF00);  
     return uint32_t(addr); 
+}
+*/
+
+float TwoUint8_to_Float32(const unsigned char* uint8s)
+{
+    int addr =uint8s[0] & 0xFF;  
+    addr |= (uint8s[1]<<8 & 0xFF00);  
+    return float(addr); 
 }
 
 private:
