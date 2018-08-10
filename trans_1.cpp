@@ -20,8 +20,8 @@ VelodyneScan_Convert_LaserScan()
 
 void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
 {
-     int smallest_value = 1e-5;
-     int inf_value=0xFFFF;
+     int smallest_value = 0.1;
+ //    int inf_value=0xFFFF;
   //ROS_INFO("%d %d %s", msg->header.seq, msg->header.stamp.nsec, msg->header.frame_id.c_str());
     sensor_msgs::LaserScan cartographer_1;
   cartographer_1.header.stamp.sec=msg->header.stamp.sec;
@@ -32,7 +32,7 @@ void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
   cartographer_1.angle_max=3.14159274101;
   cartographer_1.angle_increment=0.003490659;
   cartographer_1.time_increment=5.5296e-06;
-  cartographer_1.scan_time=9.9525e-02;
+  cartographer_1.scan_time=9.9525e-02;                                   
   cartographer_1.range_min=0;
   cartographer_1.range_max=200;
    //frame_id is not defined! 
@@ -66,7 +66,8 @@ void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
                         //  I make the value(>rang_max) dropped to rang_max. It means that invalid values(beyond the illegal range)
                         //  have already been in illegal range. It  may well result in failures in the future. Watch Out!!!
                         ////////////////////////////
-                    cartographer_1.ranges.push_back(inf_value);
+ //                   cartographer_1.ranges.push_back(inf_value);
+                        cartographer_1.ranges.push_back(INFINITY);
                     }
            //          cartographer_1.ranges[i*24+j*2+flag]=float(addr)*2/1000;
                     else{
@@ -89,7 +90,7 @@ void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
 
                     if(range_dis>200||(range_dis<smallest_value))
                     {
-                    cartographer_1.ranges.push_back(inf_value);
+                    cartographer_1.ranges.push_back(INFINITY);
                     }
     //                cartographer_1.ranges[i*24+j*2+flag]=range_dis;
                     else
