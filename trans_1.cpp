@@ -61,7 +61,7 @@ void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
                     float range_dis=float(addr)*2/1000;
                     if(range_dis>200)
                     {
-                    cartographer_1.ranges.push_back(cartographer_1.range_max)
+                    cartographer_1.ranges.push_back(cartographer_1.range_max);
                     }
            //          cartographer_1.ranges[i*24+j*2+flag]=float(addr)*2/1000;
                     else{
