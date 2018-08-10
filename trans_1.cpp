@@ -62,7 +62,7 @@ void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
                     if(range_dis>200)
                     {///////////////////////
                         //  I make the value(>rang_max) dropped to rang_max. It means that invalid values(beyond the illegal range)
-                        //  have already in illegal range. It  may well result in failures in the future. Watch Out!!!
+                        //  have already been in illegal range. It  may well result in failures in the future. Watch Out!!!
                         ////////////////////////////
                     cartographer_1.ranges.push_back(cartographer_1.range_max);
                     }
