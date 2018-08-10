@@ -8,6 +8,7 @@
 class VelodyneScan_Convert_LaserScan
 {
 public:
+ 
 
 VelodyneScan_Convert_LaserScan()
 {   
@@ -19,7 +20,8 @@ VelodyneScan_Convert_LaserScan()
 
 void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
 {
-   
+     int smallest_value = 1e-5;
+     int inf_value=0xFFFF;
   //ROS_INFO("%d %d %s", msg->header.seq, msg->header.stamp.nsec, msg->header.frame_id.c_str());
     sensor_msgs::LaserScan cartographer_1;
   cartographer_1.header.stamp.sec=msg->header.stamp.sec;
@@ -51,7 +53,7 @@ void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
                 if(flag==0)
                 {
 //                    cartographer_1->ranges[i*24+j]=float(msg->packets[i].data[100*j+6]);
-                        cartographer_1.intensities.push_back(float(msg->packets[i].data[6+100*j]));
+                        cartographer_1.intensities.push_back(float(msg->packets[i].data[6+100*j])*5);
  //                   cartographer_1.intensities[i*24+j*2+flag]=float(msg->packets[i].data[6+100*j]);
  //                   cartographer_1.ranges[i*24+j*2+flag]=(uint32_t(msg->packets[i].data[6+100*j+2]))<<8;
  //                   cartographer_1.ranges[i*24+j*2+flag]+=uint32_t(int(msg->packets[i].data[6+100*j+1]));
@@ -59,12 +61,12 @@ void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
                       int addr =int(msg->packets[i].data[6+100*j+1]) & 0xFF;  
                     addr |= int(msg->packets[i].data[6+100*j+2])<<8 & 0xFF00;  
                     float range_dis=float(addr)*2/1000;
-                    if(range_dis>200)
+                    if(range_dis>200||(range_dis<smallest_value))
                     {///////////////////////
                         //  I make the value(>rang_max) dropped to rang_max. It means that invalid values(beyond the illegal range)
                         //  have already been in illegal range. It  may well result in failures in the future. Watch Out!!!
                         ////////////////////////////
-                    cartographer_1.ranges.push_back(cartographer_1.range_max);
+                    cartographer_1.ranges.push_back(inf_value);
                     }
            //          cartographer_1.ranges[i*24+j*2+flag]=float(addr)*2/1000;
                     else{
@@ -77,7 +79,7 @@ void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
                 else if(flag==1)
                 {
  //                  cartographer_1.intensities[i*24+j*2+flag]=float(msg->packets[i].data[54+100*j]);
-                    cartographer_1.intensities.push_back(float(msg->packets[i].data[54+100*j]));
+                    cartographer_1.intensities.push_back(float(msg->packets[i].data[54+100*j])*5);
  //                   cartographer_1.ranges[i*24*j*2+flag]=(uint32_t(msg->packets[i].data[54+100*j+2]))<<8;
  //                   cartographer_1.ranges[i*24+j*2+flag]+=uint32_t(msg->packets[i].data[54+100*j+1]);
   //            cartographer_1.ranges[i*24+j*2+flag]=TwoUint8_to_Float32(&(msg->packets[i].data[54+100*j+1]));
@@ -85,9 +87,9 @@ void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
                      addr |= int(msg->packets[i].data[54+100*j+2])<<8 & 0xFF00;  
                      float range_dis=float(addr)*2/1000;
 
-                    if(range_dis>200)
+                    if(range_dis>200||(range_dis<smallest_value))
                     {
-                    cartographer_1.ranges.push_back(cartographer_1.range_max);
+                    cartographer_1.ranges.push_back(inf_value);
                     }
     //                cartographer_1.ranges[i*24+j*2+flag]=range_dis;
                     else
