@@ -60,7 +60,10 @@ void chatterCallback(const velodyne_msgs::VelodyneScan::ConstPtr& msg)
                     addr |= int(msg->packets[i].data[6+100*j+2])<<8 & 0xFF00;  
                     float range_dis=float(addr)*2/1000;
                     if(range_dis>200)
-                    {
+                    {///////////////////////
+                        //  I make the value(>rang_max) dropped to rang_max. It means that invalid values(beyond the illegal range)
+                        //  have already in illegal range. It  may well result in failures in the future. Watch Out!!!
+                        ////////////////////////////
                     cartographer_1.ranges.push_back(cartographer_1.range_max);
                     }
            //          cartographer_1.ranges[i*24+j*2+flag]=float(addr)*2/1000;
