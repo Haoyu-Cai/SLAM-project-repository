@@ -24,4 +24,7 @@ http://docs.ros.org/api/sensor_msgs/html/msg/PointCloud2.html
 
 http://www.w3school.com.cn/xml/xml_tree.asp
 
+6.Possibility of 1 lidar
+https://github.com/googlecartographer/cartographer/issues/213
+
 waiting update...
