@@ -26,5 +26,6 @@ http://www.w3school.com.cn/xml/xml_tree.asp
 
 6.Possibility of 1 lidar
 https://github.com/googlecartographer/cartographer/issues/213
+https://github.com/googlecartographer/cartographer_ros/issues/815
 
 waiting update...
